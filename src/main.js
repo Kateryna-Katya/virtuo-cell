@@ -152,4 +152,72 @@ document.addEventListener('DOMContentLoaded', () => {
     animateHero();
     initTilt();
     initCounters();
+    // 6. Benefits Path Canvas (Связи между карточками)
+    const initBenefitsCanvas = () => {
+        const bCanvas = document.getElementById('benefits-path-canvas');
+        const bCtx = bCanvas.getContext('2d');
+        const cards = document.querySelectorAll('.benefit-card');
+        
+        const resizeB = () => {
+            bCanvas.width = bCanvas.parentElement.offsetWidth;
+            bCanvas.height = bCanvas.parentElement.offsetHeight;
+        };
+        window.addEventListener('resize', resizeB);
+        resizeB();
+
+        function drawLines() {
+            bCtx.clearRect(0, 0, bCanvas.width, bCanvas.height);
+            bCtx.beginPath();
+            bCtx.setLineDash([5, 15]);
+            bCtx.strokeStyle = 'rgba(99, 102, 241, 0.2)';
+            
+            const points = [];
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const parentRect = bCanvas.getBoundingClientRect();
+                points.push({
+                    x: rect.left - parentRect.left + rect.width / 2,
+                    y: rect.top - parentRect.top + rect.height / 2
+                });
+            });
+
+            if (points.length > 1) {
+                bCtx.moveTo(points[0].x, points[0].y);
+                for (let i = 1; i < points.length; i++) {
+                    bCtx.lineTo(points[i].x, points[i].y);
+                }
+            }
+            bCtx.stroke();
+            requestAnimationFrame(drawLines);
+        }
+        drawLines();
+    };
+
+    // 7. Простая анимация появления при скролле (Scroll Reveal)
+    const initScrollReveal = () => {
+        const items = document.querySelectorAll('.benefit-card, .section-title, .section-desc');
+        const reveal = () => {
+            items.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.85) {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }
+            });
+        };
+        
+        // Начальные стили для анимации
+        items.forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(30px)';
+            item.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
+        });
+
+        window.addEventListener('scroll', reveal);
+        reveal(); // Запуск один раз для проверки видимости
+    };
+
+    // Запуск новых модулей
+    initBenefitsCanvas();
+    initScrollReveal();
 });
