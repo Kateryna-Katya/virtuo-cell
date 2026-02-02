@@ -907,3 +907,38 @@ h3,
 .burger.active span:nth-child(2) {
     transform: translateY(-0px) rotate(-45deg);
 }
+/* --- Legal Pages Styles --- */
+.pages {
+    padding: 160px 0 100px;
+    min-height: 80vh;
+}
+
+.pages h1 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: var(--text);
+    border-bottom: 2px solid var(--secondary);
+    display: inline-block;
+}
+
+.pages h2 {
+    font-size: 1.5rem;
+    margin: 30px 0 15px;
+    color: var(--accent);
+}
+
+.pages p {
+    margin-bottom: 20px;
+    color: #444;
+    max-width: 800px;
+}
+
+.pages ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+.pages li {
+    margin-bottom: 10px;
+    color: #444;
+}
