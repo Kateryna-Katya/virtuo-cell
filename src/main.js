@@ -405,4 +405,39 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     initContactForm();
+    // 11. Mobile Menu Toggle
+    const initMobileMenu = () => {
+        const burger = document.getElementById('burger');
+        const menu = document.getElementById('mobileMenu');
+        const links = document.querySelectorAll('.mobile-link');
+
+        const toggleMenu = () => {
+            burger.classList.toggle('active');
+            menu.classList.toggle('active');
+            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+        };
+
+        burger.addEventListener('click', toggleMenu);
+        links.forEach(link => link.addEventListener('click', toggleMenu));
+    };
+
+    // 12. Cookie Popup Logic
+    const initCookies = () => {
+        const popup = document.getElementById('cookiePopup');
+        const btn = document.getElementById('acceptCookies');
+
+        if (!localStorage.getItem('cookiesAccepted')) {
+            setTimeout(() => {
+                popup.classList.add('active');
+            }, 2000);
+        }
+
+        btn.addEventListener('click', () => {
+            localStorage.setItem('cookiesAccepted', 'true');
+            popup.classList.remove('active');
+        });
+    };
+
+    initMobileMenu();
+    initCookies();
 });
