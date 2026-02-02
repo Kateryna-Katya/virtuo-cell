@@ -13,7 +13,7 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
     rel="stylesheet">
     <script type="module" crossorigin src="/virtuo-cell/index.js"></script>
-    <link rel="stylesheet" crossorigin href="/virtuo-cell/assets/styles-C4yWwZ6h.css">
+    <link rel="stylesheet" crossorigin href="/virtuo-cell/assets/styles-C6Kqw9qu.css">
   </head>
   <body>
     <canvas id="hero-canvas"></canvas>
@@ -207,6 +207,56 @@
                     <a href="#contact" class="link-arrow">→</a>
                 </div>
             </div>
+        </div>
+    </div>
+</section>
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="contact__wrapper">
+            <div class="contact__info">
+                <h2 class="section-title">Запросить доступ</h2>
+                <p class="section-desc">Бесплатная консультация по всем вопросам и подбор индивидуальной стратегии
+                    обучения.</p>
+                <div class="contact__details">
+                    <div class="detail-item">
+                        <strong>Поддержка:</strong>
+                        <span>hello@virtuo-cell.life</span>
+                    </div>
+                    <div class="detail-item">
+                        <strong>Телефон:</strong>
+                        <span>+33 1 89 48 00 49</span>
+                    </div>
+                </div>
+            </div>
+
+            <form class="contact__form" id="contactForm">
+                <div class="form-group">
+                    <input type="text" id="userName" name="name" placeholder="Ваше имя" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="userEmail" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="userPhone" name="phone" placeholder="Телефон (только цифры)" required>
+                </div>
+
+                <div class="form-captcha">
+                    <label for="captcha">Сколько будет <span id="captcha-task">...</span>?</label>
+                    <input type="number" id="captchaInput" placeholder="Ваш ответ" required>
+                </div>
+
+                <div class="form-consent">
+                    <label class="checkbox-container">
+                        <input type="checkbox" required>
+                        <span class="checkmark"></span>
+                        Я согласен с <a href="./personal-data-policy.html">политикой обработки данных</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn btn--primary btn--full">Отправить запрос</button>
+
+                <div class="form-message" id="formMessage"></div>
+            </form>
         </div>
     </div>
 </section>
