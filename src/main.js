@@ -301,4 +301,56 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     initRadar();
+    // 9. Academy Draggable Slider
+    const initAcademySlider = () => {
+        const slider = document.getElementById('academy-slider');
+        const wrapper = slider.parentElement;
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        wrapper.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+            slider.style.transition = 'none';
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            isDown = false;
+        });
+
+        wrapper.addEventListener('mouseup', () => {
+            isDown = false;
+            slider.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+        });
+
+        wrapper.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2; // Коэффициент скорости
+            slider.style.transform = `translateX(${walk}px)`;
+            
+            // Здесь можно добавить влияние на Canvas фон
+            if(typeof updateBackgroundParallax === 'function') {
+                updateBackgroundParallax(walk);
+            }
+        });
+        
+        // Тач-события для мобилок
+        slider.addEventListener('touchstart', (e) => {
+            isDown = true;
+            startX = e.touches[0].pageX - slider.offsetLeft;
+        });
+        slider.addEventListener('touchend', () => isDown = false);
+        slider.addEventListener('touchmove', (e) => {
+            if (!isDown) return;
+            const x = e.touches[0].pageX - slider.offsetLeft;
+            const walk = (x - startX);
+            slider.style.transform = `translateX(${walk}px)`;
+        });
+    };
+
+    initAcademySlider();
 });

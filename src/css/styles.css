@@ -572,3 +572,113 @@ h3,
         margin: 0 auto;
     }
 }
+/* --- Academy Section --- */
+.academy {
+    padding: 120px 0;
+    background: var(--bg);
+    overflow: hidden;
+}
+
+.academy__header {
+    margin-bottom: 60px;
+}
+
+.academy__badge {
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+/* Draggable Slider */
+.academy__slider-wrapper {
+    cursor: grab;
+    padding: 20px 0 60px 0;
+    user-select: none;
+}
+
+.academy__slider-wrapper:active {
+    cursor: grabbing;
+}
+
+.academy__slider {
+    display: flex;
+    gap: 30px;
+    padding-left: calc((100vw - 1280px) / 2 + 24px);
+    /* Выравнивание по контейнеру */
+    transition: transform 0.1s ease-out;
+}
+
+@media (max-width: 1320px) {
+    .academy__slider {
+        padding-left: 24px;
+    }
+}
+
+.course-card {
+    min-width: 350px;
+    background: var(--gray);
+    padding: 40px;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 400px;
+    transition: background 0.3s ease;
+}
+
+.course-card:hover {
+    background: #eef0ff;
+}
+
+.course-card__tag {
+    background: #fff;
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    align-self: flex-start;
+    margin-bottom: 20px;
+}
+
+.course-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+}
+
+.course-card p {
+    color: #666;
+    flex-grow: 1;
+}
+
+.course-card__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.course-card__footer span {
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.link-arrow {
+    width: 50px;
+    height: 50px;
+    background: var(--text);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.course-card:hover .link-arrow {
+    background: var(--accent);
+    transform: rotate(-45deg);
+}
