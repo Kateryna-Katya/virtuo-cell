@@ -353,4 +353,56 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     initAcademySlider();
+    // 10. Contact Form Logic (Validation + Captcha + AJAX)
+    const initContactForm = () => {
+        const form = document.getElementById('contactForm');
+        const phoneInput = document.getElementById('userPhone');
+        const captchaLabel = document.getElementById('captcha-task');
+        const formMessage = document.getElementById('formMessage');
+        
+        // Генерация капчи
+        const a = Math.floor(Math.random() * 10) + 1;
+        const b = Math.floor(Math.random() * 10) + 1;
+        const correctAnswer = a + b;
+        captchaLabel.innerText = `${a} + ${b}`;
+
+        // Валидация телефона (только цифры)
+        phoneInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.replace(/[^\d+]/g, '');
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const userCaptcha = document.getElementById('captchaInput').value;
+
+            if (parseInt(userCaptcha) !== correctAnswer) {
+                formMessage.innerText = "Ошибка капчи. Попробуйте снова.";
+                formMessage.className = "form-message error";
+                return;
+            }
+
+            // Симуляция отправки
+            const submitBtn = form.querySelector('button');
+            submitBtn.innerText = "Отправка...";
+            submitBtn.disabled = true;
+
+            try {
+                // Имитация задержки сети
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                form.reset();
+                formMessage.innerText = "Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.";
+                formMessage.className = "form-message success";
+                submitBtn.innerText = "Отправлено";
+                
+            } catch (err) {
+                formMessage.innerText = "Произошла ошибка. Попробуйте позже.";
+                formMessage.className = "form-message error";
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Отправить запрос";
+            }
+        });
+    };
+
+    initContactForm();
 });
