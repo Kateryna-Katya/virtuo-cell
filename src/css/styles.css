@@ -242,7 +242,7 @@ h3,
 }
 
 .hero__title {
-    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-size: clamp(2.3rem, 8vw, 4.5rem);
     line-height: 1.1;
     font-weight: 800;
     margin-bottom: 24px;
@@ -914,7 +914,7 @@ h3,
 }
 
 .pages h1 {
-    font-size: 2.5rem;
+    font-size: 1.8rem;
     margin-bottom: 40px;
     color: var(--text);
     border-bottom: 2px solid var(--secondary);

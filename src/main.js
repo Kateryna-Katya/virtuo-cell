@@ -1,19 +1,29 @@
 /**
  * VIRTUO-CELL CORE SCRIPT
- * Vanilla JS Only
+ * Safe Version for all pages (Home + Policy pages)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // 1. Хедер: изменение при скролле
+    // --- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ ДЛЯ БЕЗОПАСНОГО ЗАПУСКА ---
+    // Если элемента нет на странице, функция просто не будет выполняться и не выдаст ошибку
+    const safeInit = (elementId, initFunction) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            initFunction(element);
+        }
+    };
+
+    // 1. Хедер: изменение при скролле (Работает везде)
     const header = document.querySelector('#header');
-    window.addEventListener('scroll', () => {
-        header.classList.toggle('scrolled', window.scrollY > 50);
-    });
+    if (header) {
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    }
 
     // 2. Инициализация канваса Hero (Интерактивная сеть)
-    const initHeroCanvas = () => {
-        const canvas = document.getElementById('hero-interactive-canvas');
+    const initHeroCanvas = (canvas) => {
         const ctx = canvas.getContext('2d');
         let particles = [];
         const mouse = { x: null, y: null, radius: 150 };
@@ -71,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.update();
                 p.draw();
             });
-            // Линии
             for(let a=0; a<particles.length; a++) {
                 for(let b=a; b<particles.length; b++) {
                     let dx = particles[a].x - particles[b].x;
@@ -92,17 +101,24 @@ document.addEventListener('DOMContentLoaded', () => {
         animate();
     };
 
-    // 3. Анимация появления Hero текста
-    const animateHero = () => {
+    // 3. Анимация появления Hero текста (Только если есть заголовок)
+    const heroTitle = document.querySelector('.hero__title');
+    if (heroTitle) {
         const words = document.querySelectorAll('.hero__title .word');
         words.forEach((w, i) => setTimeout(() => w.classList.add('visible'), i * 150));
-        setTimeout(() => document.querySelector('.hero__subtitle').classList.add('visible'), 600);
-        setTimeout(() => document.querySelector('.hero__actions').classList.add('visible'), 800);
-    };
+        setTimeout(() => {
+            const subtitle = document.querySelector('.hero__subtitle');
+            if (subtitle) subtitle.classList.add('visible');
+        }, 600);
+        setTimeout(() => {
+            const actions = document.querySelector('.hero__actions');
+            if (actions) actions.classList.add('visible');
+        }, 800);
+    }
 
     // 4. Vanilla Tilt Effect (Эффект наклона карточек)
-    const initTilt = () => {
-        const cards = document.querySelectorAll('[data-tilt]');
+    const cards = document.querySelectorAll('[data-tilt]');
+    if (cards.length > 0) {
         cards.forEach(card => {
             card.addEventListener('mousemove', e => {
                 const rect = card.getBoundingClientRect();
@@ -118,10 +134,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.style.transform = `rotateY(0deg) rotateX(0deg) translateY(0)`;
             });
         });
-    };
+    }
 
-    // 5. Счётчики статистики (Intersection Observer)
-    const initCounters = () => {
+    // 5. Счётчики статистики
+    const statNums = document.querySelectorAll('.stat-num');
+    if (statNums.length > 0) {
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -143,20 +160,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { threshold: 1 });
+        statNums.forEach(n => observer.observe(n));
+    }
 
-        document.querySelectorAll('.stat-num').forEach(n => observer.observe(n));
-    };
-
-    // Запуск всех модулей
-    initHeroCanvas();
-    animateHero();
-    initTilt();
-    initCounters();
-    // 6. Benefits Path Canvas (Связи между карточками)
-    const initBenefitsCanvas = () => {
-        const bCanvas = document.getElementById('benefits-path-canvas');
+    // 6. Benefits Path Canvas
+    const initBenefitsCanvas = (bCanvas) => {
         const bCtx = bCanvas.getContext('2d');
-        const cards = document.querySelectorAll('.benefit-card');
+        const bCards = document.querySelectorAll('.benefit-card');
         
         const resizeB = () => {
             bCanvas.width = bCanvas.parentElement.offsetWidth;
@@ -170,9 +180,8 @@ document.addEventListener('DOMContentLoaded', () => {
             bCtx.beginPath();
             bCtx.setLineDash([5, 15]);
             bCtx.strokeStyle = 'rgba(99, 102, 241, 0.2)';
-            
             const points = [];
-            cards.forEach(card => {
+            bCards.forEach(card => {
                 const rect = card.getBoundingClientRect();
                 const parentRect = bCanvas.getBoundingClientRect();
                 points.push({
@@ -180,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     y: rect.top - parentRect.top + rect.height / 2
                 });
             });
-
             if (points.length > 1) {
                 bCtx.moveTo(points[0].x, points[0].y);
                 for (let i = 1; i < points.length; i++) {
@@ -193,11 +201,11 @@ document.addEventListener('DOMContentLoaded', () => {
         drawLines();
     };
 
-    // 7. Простая анимация появления при скролле (Scroll Reveal)
-    const initScrollReveal = () => {
-        const items = document.querySelectorAll('.benefit-card, .section-title, .section-desc');
+    // 7. Scroll Reveal
+    const revealItems = document.querySelectorAll('.benefit-card, .section-title, .section-desc');
+    if (revealItems.length > 0) {
         const reveal = () => {
-            items.forEach(item => {
+            revealItems.forEach(item => {
                 const rect = item.getBoundingClientRect();
                 if (rect.top < window.innerHeight * 0.85) {
                     item.style.opacity = '1';
@@ -205,239 +213,166 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         };
-        
-        // Начальные стили для анимации
-        items.forEach(item => {
+        revealItems.forEach(item => {
             item.style.opacity = '0';
             item.style.transform = 'translateY(30px)';
             item.style.transition = 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)';
         });
-
         window.addEventListener('scroll', reveal);
-        reveal(); // Запуск один раз для проверки видимости
-    };
+        reveal();
+    }
 
-    // Запуск новых модулей
-    initBenefitsCanvas();
-    initScrollReveal();
     // 8. Innovation Radar Logic
-    const initRadar = () => {
-        const canvas = document.getElementById('radar-canvas');
+    const initRadar = (canvas) => {
         const ctx = canvas.getContext('2d');
         const pointsContainer = document.getElementById('radar-points');
         const detailTitle = document.getElementById('inno-title');
         const detailText = document.getElementById('inno-text');
 
         const techData = [
-            { x: 70, y: 30, title: "Neural Core", text: "Ядро на базе AI, которое адаптирует сложность контента под ваш прогресс." },
-            { x: 30, y: 40, title: "Cloud Sync", text: "Мгновенная синхронизация всех проектов в рамках европейской инфраструктуры." },
-            { x: 55, y: 75, title: "Smart Contracts", text: "Автоматизация выплат и условий участия в программе пассивного дохода." },
-            { x: 80, y: 60, title: "Predictive Analytics", text: "Оценка перспектив вашего проекта на базе реальных рыночных данных." }
+            { x: 70, y: 30, title: "Neural Core", text: "Ядро на базе AI." },
+            { x: 30, y: 40, title: "Cloud Sync", text: "Облачная синхронизация." },
+            { x: 55, y: 75, title: "Smart Contracts", text: "Автоматизация выплат." },
+            { x: 80, y: 60, title: "Predictive Analytics", text: "Оценка перспектив." }
         ];
 
         const resizeRadar = () => {
-            const size = canvas.parentElement.offsetWidth;
-            canvas.width = size;
-            canvas.height = size;
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.width;
         };
         window.addEventListener('resize', resizeRadar);
         resizeRadar();
 
         let angle = 0;
-
-        // Создаем точки
         techData.forEach(tech => {
             const node = document.createElement('div');
             node.className = 'radar-node';
-            node.style.left = `${tech.x}%`;
-            node.style.top = `${tech.y}%`;
-            
+            node.style.left = tech.x + '%';
+            node.style.top = tech.y + '%';
             node.addEventListener('mouseenter', () => {
-                detailTitle.innerText = tech.title;
-                detailText.innerText = tech.text;
-                node.style.boxShadow = "0 0 30px #fff";
+                if(detailTitle) detailTitle.innerText = tech.title;
+                if(detailText) detailText.innerText = tech.text;
             });
-
-            pointsContainer.appendChild(node);
+            if(pointsContainer) pointsContainer.appendChild(node);
         });
 
         const drawRadar = () => {
             const cx = canvas.width / 2;
             const cy = canvas.height / 2;
             const radius = canvas.width * 0.45;
-
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // Сетки радара
             ctx.strokeStyle = 'rgba(99, 102, 241, 0.15)';
-            ctx.lineWidth = 1;
             for(let i = 1; i <= 3; i++) {
                 ctx.beginPath();
                 ctx.arc(cx, cy, (radius / 3) * i, 0, Math.PI * 2);
                 ctx.stroke();
             }
-
-            // Вращающийся луч
-            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
-            gradient.addColorStop(0, 'rgba(99, 102, 241, 0)');
-            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.4)');
-
             ctx.save();
             ctx.translate(cx, cy);
             ctx.rotate(angle);
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.arc(0, 0, radius, -0.2, 0); // Узкий сектор луча
+            ctx.arc(0, 0, radius, -0.2, 0);
             ctx.lineTo(0, 0);
-            ctx.fillStyle = gradient;
+            ctx.fillStyle = 'rgba(99, 102, 241, 0.3)';
             ctx.fill();
             ctx.restore();
-
             angle += 0.02;
             requestAnimationFrame(drawRadar);
         };
-
         drawRadar();
     };
 
-    initRadar();
     // 9. Academy Draggable Slider
-    const initAcademySlider = () => {
-        const slider = document.getElementById('academy-slider');
+    const slider = document.getElementById('academy-slider');
+    if (slider) {
         const wrapper = slider.parentElement;
-        let isDown = false;
-        let startX;
-        let scrollLeft;
-
+        let isDown = false; let startX; let scrollLeft;
         wrapper.addEventListener('mousedown', (e) => {
             isDown = true;
             startX = e.pageX - slider.offsetLeft;
-            scrollLeft = slider.scrollLeft;
             slider.style.transition = 'none';
         });
-
-        wrapper.addEventListener('mouseleave', () => {
-            isDown = false;
-        });
-
+        wrapper.addEventListener('mouseleave', () => isDown = false);
         wrapper.addEventListener('mouseup', () => {
             isDown = false;
             slider.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
         });
-
         wrapper.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
             const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2; // Коэффициент скорости
-            slider.style.transform = `translateX(${walk}px)`;
-            
-            // Здесь можно добавить влияние на Canvas фон
-            if(typeof updateBackgroundParallax === 'function') {
-                updateBackgroundParallax(walk);
-            }
-        });
-        
-        // Тач-события для мобилок
-        slider.addEventListener('touchstart', (e) => {
-            isDown = true;
-            startX = e.touches[0].pageX - slider.offsetLeft;
-        });
-        slider.addEventListener('touchend', () => isDown = false);
-        slider.addEventListener('touchmove', (e) => {
-            if (!isDown) return;
-            const x = e.touches[0].pageX - slider.offsetLeft;
-            const walk = (x - startX);
+            const walk = (x - startX) * 2;
             slider.style.transform = `translateX(${walk}px)`;
         });
-    };
+    }
 
-    initAcademySlider();
-    // 10. Contact Form Logic (Validation + Captcha + AJAX)
-    const initContactForm = () => {
-        const form = document.getElementById('contactForm');
+    // 10. Contact Form Logic
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
         const phoneInput = document.getElementById('userPhone');
         const captchaLabel = document.getElementById('captcha-task');
         const formMessage = document.getElementById('formMessage');
-        
-        // Генерация капчи
         const a = Math.floor(Math.random() * 10) + 1;
         const b = Math.floor(Math.random() * 10) + 1;
         const correctAnswer = a + b;
-        captchaLabel.innerText = `${a} + ${b}`;
+        if(captchaLabel) captchaLabel.innerText = `${a} + ${b}`;
 
-        // Валидация телефона (только цифры)
-        phoneInput.addEventListener('input', (e) => {
-            e.target.value = e.target.value.replace(/[^\d+]/g, '');
-        });
+        if(phoneInput) {
+            phoneInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/[^\d+]/g, '');
+            });
+        }
 
-        form.addEventListener('submit', async (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const userCaptcha = document.getElementById('captchaInput').value;
-
             if (parseInt(userCaptcha) !== correctAnswer) {
-                formMessage.innerText = "Ошибка капчи. Попробуйте снова.";
+                formMessage.innerText = "Ошибка капчи.";
                 formMessage.className = "form-message error";
                 return;
             }
-
-            // Симуляция отправки
-            const submitBtn = form.querySelector('button');
+            const submitBtn = contactForm.querySelector('button');
             submitBtn.innerText = "Отправка...";
             submitBtn.disabled = true;
-
-            try {
-                // Имитация задержки сети
-                await new Promise(resolve => setTimeout(resolve, 1500));
-                
-                form.reset();
-                formMessage.innerText = "Спасибо! Ваша заявка принята. Мы свяжемся с вами в ближайшее время.";
-                formMessage.className = "form-message success";
-                submitBtn.innerText = "Отправлено";
-                
-            } catch (err) {
-                formMessage.innerText = "Произошла ошибка. Попробуйте позже.";
-                formMessage.className = "form-message error";
-                submitBtn.disabled = false;
-                submitBtn.innerText = "Отправить запрос";
-            }
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            contactForm.reset();
+            formMessage.innerText = "Успешно отправлено!";
+            formMessage.className = "form-message success";
+            submitBtn.innerText = "Отправлено";
         });
-    };
+    }
 
-    initContactForm();
-    // 11. Mobile Menu Toggle
-    const initMobileMenu = () => {
-        const burger = document.getElementById('burger');
-        const menu = document.getElementById('mobileMenu');
-        const links = document.querySelectorAll('.mobile-link');
-
+    // 11. Mobile Menu Toggle (Работает всегда)
+    const burger = document.getElementById('burger');
+    const menu = document.getElementById('mobileMenu');
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    if (burger && menu) {
         const toggleMenu = () => {
             burger.classList.toggle('active');
             menu.classList.toggle('active');
             document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
         };
-
         burger.addEventListener('click', toggleMenu);
-        links.forEach(link => link.addEventListener('click', toggleMenu));
-    };
+        mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+    }
 
-    // 12. Cookie Popup Logic
-    const initCookies = () => {
-        const popup = document.getElementById('cookiePopup');
-        const btn = document.getElementById('acceptCookies');
-
+    // 12. Cookie Popup
+    const cookiePopup = document.getElementById('cookiePopup');
+    const acceptBtn = document.getElementById('acceptCookies');
+    if (cookiePopup && acceptBtn) {
         if (!localStorage.getItem('cookiesAccepted')) {
-            setTimeout(() => {
-                popup.classList.add('active');
-            }, 2000);
+            setTimeout(() => cookiePopup.classList.add('active'), 2000);
         }
-
-        btn.addEventListener('click', () => {
+        acceptBtn.addEventListener('click', () => {
             localStorage.setItem('cookiesAccepted', 'true');
-            popup.classList.remove('active');
+            cookiePopup.classList.remove('active');
         });
-    };
+    }
 
-    initMobileMenu();
-    initCookies();
+    // ЗАПУСК СЛОЖНЫХ КАНВАСОВ ЧЕРЕЗ ПРОВЕРКУ
+    safeInit('hero-interactive-canvas', initHeroCanvas);
+    safeInit('benefits-path-canvas', initBenefitsCanvas);
+    safeInit('radar-canvas', initRadar);
+
 });
