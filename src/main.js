@@ -220,4 +220,85 @@ document.addEventListener('DOMContentLoaded', () => {
     // Запуск новых модулей
     initBenefitsCanvas();
     initScrollReveal();
+    // 8. Innovation Radar Logic
+    const initRadar = () => {
+        const canvas = document.getElementById('radar-canvas');
+        const ctx = canvas.getContext('2d');
+        const pointsContainer = document.getElementById('radar-points');
+        const detailTitle = document.getElementById('inno-title');
+        const detailText = document.getElementById('inno-text');
+
+        const techData = [
+            { x: 70, y: 30, title: "Neural Core", text: "Ядро на базе AI, которое адаптирует сложность контента под ваш прогресс." },
+            { x: 30, y: 40, title: "Cloud Sync", text: "Мгновенная синхронизация всех проектов в рамках европейской инфраструктуры." },
+            { x: 55, y: 75, title: "Smart Contracts", text: "Автоматизация выплат и условий участия в программе пассивного дохода." },
+            { x: 80, y: 60, title: "Predictive Analytics", text: "Оценка перспектив вашего проекта на базе реальных рыночных данных." }
+        ];
+
+        const resizeRadar = () => {
+            const size = canvas.parentElement.offsetWidth;
+            canvas.width = size;
+            canvas.height = size;
+        };
+        window.addEventListener('resize', resizeRadar);
+        resizeRadar();
+
+        let angle = 0;
+
+        // Создаем точки
+        techData.forEach(tech => {
+            const node = document.createElement('div');
+            node.className = 'radar-node';
+            node.style.left = `${tech.x}%`;
+            node.style.top = `${tech.y}%`;
+            
+            node.addEventListener('mouseenter', () => {
+                detailTitle.innerText = tech.title;
+                detailText.innerText = tech.text;
+                node.style.boxShadow = "0 0 30px #fff";
+            });
+
+            pointsContainer.appendChild(node);
+        });
+
+        const drawRadar = () => {
+            const cx = canvas.width / 2;
+            const cy = canvas.height / 2;
+            const radius = canvas.width * 0.45;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Сетки радара
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.15)';
+            ctx.lineWidth = 1;
+            for(let i = 1; i <= 3; i++) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, (radius / 3) * i, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Вращающийся луч
+            const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+            gradient.addColorStop(0, 'rgba(99, 102, 241, 0)');
+            gradient.addColorStop(1, 'rgba(99, 102, 241, 0.4)');
+
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.rotate(angle);
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.arc(0, 0, radius, -0.2, 0); // Узкий сектор луча
+            ctx.lineTo(0, 0);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.restore();
+
+            angle += 0.02;
+            requestAnimationFrame(drawRadar);
+        };
+
+        drawRadar();
+    };
+
+    initRadar();
 });

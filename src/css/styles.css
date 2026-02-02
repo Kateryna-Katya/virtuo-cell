@@ -484,3 +484,91 @@ h3,
         padding: 80px 0;
     }
 }
+/* --- Innovations Section --- */
+.innovations {
+    padding: 100px 0;
+    background: #0d0d12;
+    /* Темный акцент для контраста */
+    color: #fff;
+    overflow: hidden;
+}
+
+.innovations .section-title {
+    color: #fff;
+}
+
+.innovations .section-desc {
+    color: #aaa;
+}
+
+.innovations__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.innovations__visual {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#radar-canvas {
+    width: 100%;
+    height: 100%;
+}
+
+.radar-points {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.radar-node {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 15px var(--accent);
+    transition: transform 0.3s ease;
+    z-index: 5;
+}
+
+.radar-node:hover {
+    transform: scale(2);
+    background: #fff;
+}
+
+.innovation-detail {
+    margin-top: 40px;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    border-left: 4px solid var(--accent);
+    min-height: 180px;
+}
+
+.innovation-detail h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    color: var(--secondary);
+}
+
+@media (max-width: 992px) {
+    .innovations__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .innovations__visual {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+}
