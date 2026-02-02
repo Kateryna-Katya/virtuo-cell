@@ -1,34 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/virtuo-cell/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanilla App Template</title>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Virtuo-Cell — Инновации на пальцах</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Plus+Jakarta+Sans:wght@700;800&display=swap"
+    rel="stylesheet">
     <script type="module" crossorigin src="/virtuo-cell/index.js"></script>
-    <link rel="stylesheet" crossorigin href="/virtuo-cell/assets/styles-guStct1H.css">
+    <link rel="stylesheet" crossorigin href="/virtuo-cell/assets/styles-v8EoPbjr.css">
   </head>
   <body>
-    <header class="header">
-  <div class="container">
-    <nav class="nav">
-      <a class="nav-logo" href="./index.html" aria-label="Site logo">
-        <svg class="nav-logo-icon" width="100" height="30">
-          <use href="{=$icon-path}"></use>
-        </svg>
-      </a>
-      <ul class="nav-list">
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-act}" href="./page-2.html">Page 2</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link {=$highlight-curr}" href="./page-3.html">Page 3</a>
-        </li>
+    <canvas id="hero-canvas"></canvas>
+    <header class="header" id="header">
+  <div class="container header__container">
+    <a href="/" class="header__logo">
+      <span class="logo__dot"></span> Virtuo-Cell
+    </a>
+    <nav class="header__nav">
+      <ul class="nav__list">
+        <li><a href="#" class="nav__link">Главная</a></li>
+        <li><a href="#about" class="nav__link">О платформе</a></li>
+        <li><a href="#benefits" class="nav__link">Преимущества</a></li>
+        <li><a href="#innovations" class="nav__link">Инновации</a></li>
+        <li><a href="#academy" class="nav__link">Академия</a></li>
       </ul>
     </nav>
+    <a href="#contact" class="header__cta">Связаться</a>
+    <button class="burger" id="burger"><span></span></button>
   </div>
 </header>
-
 
     <main>
       <!-- Loads the specified .html file -->
@@ -36,21 +42,43 @@
     </main>
 
     <footer class="footer">
-  <div class="container">
-    <p class="footer-desc">
-      Made with ✨ by
-      <a
-        class="footer-link"
-        href="https://goit.global/ua/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        GoIT team
-      </a>
-    </p>
+  <div class="container footer__grid">
+    <div class="footer__col">
+      <a href="/" class="footer__logo">Virtuo-Cell</a>
+      <p class="footer__description">Переосмыслите подход к развитию вместе с экспертной поддержкой на всех этапах.</p>
+    </div>
+    <div class="footer__col">
+      <h4 class="footer__title">Меню</h4>
+      <ul class="footer__links">
+        <li><a href="#">Главная</a></li>
+        <li><a href="#about">О платформе</a></li>
+        <li><a href="#benefits">Преимущества</a></li>
+        <li><a href="#innovations">Инновации</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="footer__title">Юридическая информация</h4>
+      <ul class="footer__links">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="terms.html">Terms of Service</a></li>
+        <li><a href="cookies.html">Cookie Policy</a></li>
+        <li><a href="return.html">Refund Policy</a></li>
+        <li><a href="disclaimer.html">Disclaimer</a></li>
+      </ul>
+    </div>
+    <div class="footer__col">
+      <h4 class="footer__title">Контакты</h4>
+      <ul class="footer__contacts">
+        <li><a href="tel:+33189480049">+33 1 89 48 00 49</a></li>
+        <li><a href="mailto:hello@virtuo-cell.life">hello@virtuo-cell.life</a></li>
+        <li>Rue de Rivoli, 75001 Paris, France</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <p>&copy; 2026 Virtuo-Cell. Предложение активно только в странах ЕС.</p>
   </div>
 </footer>
-
 
   </body>
 </html>
